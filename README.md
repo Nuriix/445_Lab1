@@ -1,1 +1,1 @@
-# 445_Lab1
+# COMP 445 - Lab 1 Assignment
