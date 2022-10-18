@@ -8,26 +8,18 @@ import argparse
 import socket
 from sys import exit
 from urllib.parse import urlparse
-
-# ########################################################################################################################
-#    To read passed arguments in cmd line, such as 'help get', as one strings instead of multiple for better handling.   #
-# ########################################################################################################################
-class CustomAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, " ".join(values))
-
 ##########################################################################################################################
 #                                                    Parsing Arguments                                                   #
 ##########################################################################################################################
 # httpc (get|post) [-v] (-h "k:v")* [-d inline-data] [-f file] URL
 
 parser = argparse.ArgumentParser(add_help=False)
-parser.add_argument('command',type=str, nargs='+', choices=['get', 'post', 'help', 'help get', 'help post'], action=CustomAction)
+parser.add_argument('command',type=str, choices=['get', 'post', 'help', 'help_get', 'help_post'])
 parser.add_argument('-v', dest='verbose', action='store_true')
 parser.add_argument('-h', dest='header', help='Associates headers to HTTP request with the format \'key:value\'', action='append')
 parser.add_argument('-d', dest='data', type=str)
 parser.add_argument('-f', dest='file', type=str)
-parser.add_argument('-url', dest='url', type=str)
+parser.add_argument('-url', dest='url', type=str, action='store')
 args = parser.parse_args()
 
 ##########################################################################################################################
@@ -37,14 +29,14 @@ if args.command == 'help':
     print('\nhttpc is a curl-like application but supports HTTP protocol only.\nUsage:\n\thttpc.py command ' \
           '[arguments]\nThe commands are:\n\tget\texecutes a HTTP GET request and prints the response.\n\tpost\t' \
           'executes a HTTP POST request and prints the response.\n\thelp\tprints this screen.\n\n' \
-          'Use "httpc help [command]" for more information about a command.\n')
+          'Use "httpc help_[command]" for more information about a command.\n')
 
-elif args.command == 'help get':
+elif args.command == 'help_get':
     print('\nusage: httpc get [-v] [-h key:value] URL\n\nGet executes a HTTP GET request for a given URL.\n\t-v' \
           '\t\tPrints the detail of the response such as protocol, status, and headers.\n\t-h key:value\t' \
           'Associates headers to HTTP Request with the format "key:value".\n')
 
-elif args.command == 'help post':
+elif args.command == 'help_post':
      print('\nusage: httpc post [-v] [-h key:value] [-d inline-data] [-f file] URL\n\nPost executes a HTTP ' \
            'POST request for a given URL with inline data or from file.\n\t-v\t\tPrints the detail of the ' \
            'response such as protocol, status, and headers.\n\t-h key:value\tAssociates headers to HTTP Request ' \
