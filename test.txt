@@ -1,0 +1,19 @@
+------------------------------------------------|  General cmd  |-----------------------------------------------------------
+python3 httpc.py help
+python3 httpc.py help get
+python3 httpc.py help post
+-------------------------------------------------| Without -url |-----------------------------------------------------------
+[GET]
+python3 httpc.py get 'http://httpbin.org/get?course=networking&assignment=1'
+python3 httpc.py get -v 'http://httpbin.org/get?course=networking&assignment=1'
+
+[POST]
+python3 httpc.py post -h Content-Type:application/json -d '{"Assignment": 1}' http://httpbin.org/post
+
+--------------------------------------------------| With - url  |----------------------------------------------------------
+[GET]
+python3 httpc.py get -url 'http://httpbin.org/get?course=networking&assignment=1'
+python3 httpc.py get -v -url 'http://httpbin.org/get?course=networking&assignment=1'
+
+[POST]
+python3 httpc.py post -h Content-Type:application/json -d '{"Assignment": 1}' -url http://httpbin.org/post
